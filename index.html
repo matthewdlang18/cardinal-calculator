@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardinal Calculator - Time Value of Money Calculator</title>
+    <meta name="description" content="Free Time Value of Money (TVM) calculator with Stanford Cardinal branding. Solve for PV, FV, PMT, n, or interest rate with step-by-step solutions.">
+    <meta name="keywords" content="TVM calculator, time value of money, financial calculator, present value, future value, annuity calculator, Stanford">
+    <meta name="author" content="Matthew Lang">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Cardinal Calculator - Financial TVM Calculator">
+    <meta property="og:description" content="Comprehensive Time Value of Money calculator with step-by-step solutions">
+    <meta property="og:image" content="https://matthewdlang18.github.io/cardinal-calculator/wherewhatwhen_a_cartoon_cardinal_doing_taxes_hilarious_47c93191-18a6-42ee-9402-a5e172c7cd2f.png.webp">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="wherewhatwhen_a_cartoon_cardinal_doing_taxes_hilarious_47c93191-18a6-42ee-9402-a5e172c7cd2f.png.webp">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8C1515 0%, #2E2D29 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calculator-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(140, 21, 21, 0.4);
+            padding: 40px;
+        }
+
+        .saved-results-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(140, 21, 21, 0.4);
+            padding: 30px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #8C1515;
+        }
+
+        .cardinal-logo {
+            width: 80px;
+            height: auto;
+        }
+
+        .header-text {
+            text-align: left;
+        }
+
+        .cardinal-banner {
+            width: 100%;
+            height: 150px;
+            background-image: url('wherewhatwhen_a_bunch_of_cartoon_cardinals_working_on_wall_stre_e22e82da-7966-450c-9646-12d88ea4bdac.png.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 3px solid #8C1515;
+        }
+
+        h1 {
+            color: #8C1515;
+            margin-bottom: 5px;
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #5F574F;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2E2D29;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .label-description {
+            font-size: 11px;
+            color: #5F574F;
+            font-weight: normal;
+            display: block;
+            margin-top: 2px;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #E4E1D8;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #FAFAFA;
+        }
+
+        input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #8C1515;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(140, 21, 21, 0.1);
+        }
+
+        input[type="number"]:disabled {
+            background: linear-gradient(135deg, #FFF3CD 0%, #FFE69C 100%);
+            border-color: #FFD700;
+            font-weight: 600;
+            cursor: not-allowed;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #8C1515 0%, #B1040E 100%);
+            color: white;
+            flex: 2;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(140, 21, 21, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #2E2D29 0%, #5F574F 100%);
+            color: white;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 45, 41, 0.4);
+        }
+
+        .reset-btn {
+            background: #E4E1D8;
+            color: #2E2D29;
+        }
+
+        .reset-btn:hover {
+            background: #D4D1C6;
+            transform: translateY(-2px);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #F8F8F8 0%, #FFFFFF 100%);
+            border-radius: 15px;
+            border: 2px solid #8C1515;
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E4E1D8;
+        }
+
+        .result-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #8C1515;
+        }
+
+        .result-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #8C1515;
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(140, 21, 21, 0.1);
+        }
+
+        .result-details {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.8;
+            margin-top: 15px;
+        }
+
+        .formula-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .formula-step {
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #FAFAFA 0%, #F5F5F5 100%);
+            border-radius: 10px;
+            border-left: 5px solid #8C1515;
+        }
+
+        .formula-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #8C1515;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(140, 21, 21, 0.1);
+            border-radius: 4px;
+        }
+
+        .formula-content {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        .math-formula {
+            font-family: 'Times New Roman', serif;
+            font-size: 18px;
+            color: #333;
+            line-height: 2.2;
+        }
+
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 3px;
+        }
+
+        .fraction .numerator {
+            display: block;
+            border-bottom: 1px solid #333;
+            padding-bottom: 2px;
+        }
+
+        .fraction .denominator {
+            display: block;
+            padding-top: 2px;
+        }
+
+        .bracket-wrapper {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .bracket-left, .bracket-right {
+            font-size: 3em;
+            line-height: 0.8;
+            vertical-align: middle;
+        }
+
+        .sqrt {
+            text-decoration: overline;
+        }
+
+        sup {
+            font-size: 0.7em;
+            vertical-align: super;
+        }
+
+        sub {
+            font-size: 0.7em;
+            vertical-align: sub;
+        }
+
+        .final-answer {
+            background: linear-gradient(135deg, #8C1515 0%, #B1040E 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(140, 21, 21, 0.3);
+        }
+
+        .final-answer .formula-label {
+            color: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .final-answer .formula-content {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #8C1515;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 15px;
+            background: #FFE5E5;
+            border-radius: 10px;
+            border-left: 4px solid #8C1515;
+            display: none;
+            font-weight: 600;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #F4F4F4 0%, #E4E1D8 100%);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #2E2D29;
+            border-left: 5px solid #B1040E;
+            font-weight: 500;
+        }
+
+        .solve-for-section {
+            background: linear-gradient(135deg, #8C1515 0%, #B1040E 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(140, 21, 21, 0.3);
+        }
+
+        .solve-for-section label {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .solve-for-section select {
+            background: white;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 16px;
+        }
+
+        /* Saved Results Sidebar Styles */
+        .saved-results-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #8C1515;
+        }
+
+        .saved-results-header h2 {
+            color: #8C1515;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .saved-results-header p {
+            color: #5F574F;
+            font-size: 13px;
+        }
+
+        .saved-result-card {
+            background: white;
+            border: 2px solid #E4E1D8;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .saved-result-card:hover {
+            border-color: #8C1515;
+            box-shadow: 0 4px 15px rgba(140, 21, 21, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .saved-result-timestamp {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .saved-result-variable {
+            font-size: 18px;
+            font-weight: 700;
+            color: #8C1515;
+            margin-bottom: 8px;
+        }
+
+        .saved-result-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2E2D29;
+            margin-bottom: 12px;
+        }
+
+        .saved-result-details {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+            padding-top: 12px;
+            border-top: 1px solid #E4E1D8;
+        }
+
+        .saved-result-details div {
+            margin-bottom: 5px;
+        }
+
+        .delete-result-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #FFE5E5;
+            color: #8C1515;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-result-btn:hover {
+            background: #8C1515;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .clear-all-btn {
+            width: 100%;
+            padding: 12px;
+            background: #E4E1D8;
+            color: #2E2D29;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .clear-all-btn:hover {
+            background: #8C1515;
+            color: white;
+        }
+
+        .no-saved-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .no-saved-results svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Scientific Calculator Styles */
+        .scientific-calculator {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculator-header {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #8C1515;
+        }
+
+        .calculator-header h3 {
+            color: #8C1515;
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .calculator-header p {
+            color: #5F574F;
+            font-size: 11px;
+        }
+
+        .calc-display {
+            background: #2E2D29;
+            color: #00FF00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            text-align: right;
+            margin-bottom: 15px;
+            min-height: 50px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .calc-btn {
+            padding: 15px 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #E4E1D8;
+            color: #2E2D29;
+        }
+
+        .calc-btn:hover {
+            background: #D4D1C6;
+            transform: scale(1.05);
+        }
+
+        .calc-btn:active {
+            transform: scale(0.95);
+        }
+
+        .calc-btn.operator {
+            background: linear-gradient(135deg, #8C1515 0%, #B1040E 100%);
+            color: white;
+        }
+
+        .calc-btn.function {
+            background: linear-gradient(135deg, #5F574F 0%, #2E2D29 100%);
+            color: white;
+            font-size: 14px;
+        }
+
+        .calc-btn.equals {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .calc-btn.clear {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .saved-results-container {
+                max-height: 500px;
+            }
+        }
+
+        /* Scientific Calculator Styles */
+        .scientific-calculator {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .scientific-calculator h3 {
+            color: #8C1515;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .calc-display {
+            background: #2E2D29;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            text-align: right;
+            margin-bottom: 15px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            word-break: break-all;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .calc-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #F5F5F5;
+            color: #2E2D29;
+        }
+
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .calc-btn:active {
+            transform: translateY(0);
+        }
+
+        .calc-btn.operator {
+            background: linear-gradient(135deg, #8C1515 0%, #B1040E 100%);
+            color: white;
+        }
+
+        .calc-btn.function {
+            background: linear-gradient(135deg, #2E2D29 0%, #5F574F 100%);
+            color: white;
+            font-size: 14px;
+        }
+
+        .calc-btn.equals {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .calc-btn.clear {
+            background: #FFE5E5;
+            color: #8C1515;
+            font-weight: 700;
+        }
+
+        .calc-btn.clear:hover {
+            background: #8C1515;
+            color: white;
+        }
+
+        .calc-btn.memory {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #2E2D29;
+            font-weight: 700;
+        }
+
+        .calc-memory-display {
+            background: #F8F8F8;
+            border: 2px solid #E4E1D8;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .calc-memory-display h4 {
+            color: #8C1515;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calc-memory-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid #E4E1D8;
+        }
+
+        .calc-memory-item:hover {
+            border-color: #8C1515;
+            cursor: pointer;
+        }
+
+        .calc-memory-value {
+            color: #2E2D29;
+            font-weight: 600;
+        }
+
+        .calc-memory-delete {
+            background: #FFE5E5;
+            color: #8C1515;
+            border: none;
+            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .calc-memory-delete:hover {
+            background: #8C1515;
+            color: white;
+        }
+
+        .calc-memory-empty {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            padding: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .header-container {
+                flex-direction: column;
+            }
+
+            .header-text {
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="calculator-container">
+            <div class="header-container">
+                <img src="wherewhatwhen_a_cartoon_cardinal_doing_taxes_hilarious_47c93191-18a6-42ee-9402-a5e172c7cd2f.png.webp" alt="Cardinal Mascot" class="cardinal-logo">
+                <div class="header-text">
+                    <h1>Cardinal Calculator</h1>
+                    <p class="subtitle">Time Value of Money Calculations</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>💡 How to use:</strong> Select which variable to solve for, enter the known values, then click Calculate.
+            </div>
+
+            <div class="solve-for-section">
+                <label for="solveFor">What would you like to solve for?</label>
+                <select id="solveFor">
+                    <option value="">Select variable to solve for</option>
+                    <option value="PV">PV (Present Value)</option>
+                    <option value="FV">FV (Future Value)</option>
+                    <option value="PMT">PMT (Payment)</option>
+                    <option value="n">n (Number of Periods)</option>
+                    <option value="annualRate">Annual Interest Rate (%)</option>
+                </select>
+            </div>
+
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label for="PV">Present Value (PV) <span class="label-description">Initial amount today</span></label>
+                    <input type="number" id="PV" step="0.01" placeholder="Enter amount">
+                </div>
+
+                <div class="input-group">
+                    <label for="FV">Future Value (FV) <span class="label-description">Amount at end of period</span></label>
+                    <input type="number" id="FV" step="0.01" placeholder="Enter amount">
+                </div>
+
+                <div class="input-group">
+                    <label for="PMT">Payment (PMT) <span class="label-description">Regular payment amount</span></label>
+                    <input type="number" id="PMT" step="0.01" placeholder="Enter amount">
+                </div>
+
+                <div class="input-group">
+                    <label for="annualRate">Annual Interest Rate <span class="label-description">Percentage per year (e.g., 6 for 6%)</span></label>
+                    <input type="number" id="annualRate" step="0.01" placeholder="e.g., 6 for 6%">
+                </div>
+
+                <div class="input-group">
+                    <label for="frequency">Compounding Frequency</label>
+                    <select id="frequency">
+                        <option value="1">Annual</option>
+                        <option value="2">Semi-Annual</option>
+                        <option value="4">Quarterly</option>
+                        <option value="12" selected>Monthly</option>
+                        <option value="52">Weekly</option>
+                        <option value="365">Daily</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="n">Number of Periods (n) <span class="label-description">Total payment periods</span></label>
+                    <input type="number" id="n" step="1" placeholder="Enter number">
+                </div>
+
+                <div class="input-group">
+                    <label for="paymentType">Payment Type</label>
+                    <select id="paymentType">
+                        <option value="end">End of Period (Ordinary Annuity)</option>
+                        <option value="begin">Beginning of Period (Annuity Due)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="calculate-btn" onclick="calculate()">Calculate</button>
+                <button class="save-btn" onclick="saveResult()" id="saveBtn" style="display:none;">Save Result</button>
+                <button class="reset-btn" onclick="resetForm()">Reset</button>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+
+            <div class="result-container" id="resultContainer">
+                <div class="result-header">
+                    <div class="result-title" id="resultTitle">Result</div>
+                </div>
+                <div class="result-value" id="resultValue">$0.00</div>
+                <div class="result-details" id="resultDetails"></div>
+            </div>
+        </div>
+
+        <div class="saved-results-container">
+            <div class="cardinal-banner"></div>
+            
+            <div class="saved-results-header">
+                <h2>📊 Saved Results</h2>
+                <p>Reference your previous calculations</p>
+            </div>
+            <div id="savedResultsList">
+                <div class="no-saved-results">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p>No saved results yet.<br>Calculate and save results to see them here.</p>
+                </div>
+            </div>
+
+            <!-- Scientific Calculator -->
+            <div class="scientific-calculator">
+                <h3>🧮 Quick Calculator</h3>
+                <div class="calc-display" id="calcDisplay">0</div>
+                <div class="calc-buttons">
+                    <button class="calc-btn clear" onclick="calcClear()">AC</button>
+                    <button class="calc-btn function" onclick="calcFunction('sqrt')">√</button>
+                    <button class="calc-btn function" onclick="calcFunction('ln')">ln</button>
+                    <button class="calc-btn operator" onclick="calcInput('/')">÷</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn operator" onclick="calcInput('-')">−</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('0')">0</button>
+                    <button class="calc-btn" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn function" onclick="calcFunction('negate')">±</button>
+                    <button class="calc-btn function" onclick="calcFunction('pow')">x²</button>
+                    
+                    <button class="calc-btn function" onclick="startPowerInput()">x^y</button>
+                    <button class="calc-btn function" onclick="calcFunction('1/x')">1/x</button>
+                    <button class="calc-btn clear" onclick="calcBackspace()">⌫</button>
+                    <button class="calc-btn memory" onclick="calcSaveMemory()">Save</button>
+                    
+                    <button class="calc-btn equals" onclick="calcCalculate()">=</button>
+                    <button class="calc-btn operator" onclick="calcInput('%')">%</button>
+                </div>
+                
+                <div class="calc-memory-display" id="calcMemoryDisplay">
+                    <h4>💾 Saved Values</h4>
+                    <div class="calc-memory-empty">No saved values yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Saved results storage
+        let savedResults = JSON.parse(localStorage.getItem('cardinalCalculatorResults')) || [];
+        let currentResult = null;
+
+        // Load saved results on page load
+        window.addEventListener('load', function() {
+            displaySavedResults();
+        });
+
+        // Update input states when solveFor changes
+        document.getElementById('solveFor').addEventListener('change', function() {
+            const solveFor = this.value;
+            const inputs = ['PV', 'FV', 'PMT', 'annualRate', 'n'];
+            
+            inputs.forEach(input => {
+                const element = document.getElementById(input);
+                if (input === solveFor) {
+                    element.disabled = true;
+                    element.value = '';
+                    element.style.backgroundColor = '#fff3cd';
+                } else {
+                    element.disabled = false;
+                    element.style.backgroundColor = '';
+                }
+            });
+        });
+
+        function calculate() {
+            const solveFor = document.getElementById('solveFor').value;
+            
+            if (!solveFor) {
+                showError('Please select a variable to solve for');
+                return;
+            }
+
+            const PV = parseFloat(document.getElementById('PV').value) || null;
+            const FV = parseFloat(document.getElementById('FV').value) || null;
+            const PMT = parseFloat(document.getElementById('PMT').value) || null;
+            const annualRate = parseFloat(document.getElementById('annualRate').value) || null;
+            const frequency = parseFloat(document.getElementById('frequency').value);
+            const n = parseFloat(document.getElementById('n').value) || null;
+            const paymentType = document.getElementById('paymentType').value;
+            
+            // Calculate periodic rate
+            const rate = annualRate !== null ? annualRate / frequency : null;
+            
+            let result, formula;
+            try {
+                switch(solveFor) {
+                    case 'PV':
+                        [result, ...formula] = calculatePV(FV, PMT, rate, n, paymentType, frequency, annualRate);
+                        break;
+                    case 'FV':
+                        [result, ...formula] = calculateFV(PV, PMT, rate, n, paymentType, frequency, annualRate);
+                        break;
+                    case 'PMT':
+                        [result, ...formula] = calculatePMT(PV, FV, rate, n, paymentType, frequency, annualRate);
+                        break;
+                    case 'n':
+                        [result, ...formula] = calculateN(PV, FV, PMT, rate, paymentType, frequency, annualRate);
+                        break;
+                    case 'annualRate':
+                        [result, ...formula] = calculateRate(PV, FV, PMT, n, paymentType, frequency);
+                        break;
+                }
+                
+                displayResult(solveFor, result, formula[0], formula[1]);
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        function calculatePV(FV, PMT, rate, n, type, frequency, annualRate) {
+            if (rate === null || n === null) {
+                throw new Error('Please enter Annual Interest Rate and Number of Periods');
+            }
+            
+            const r = rate / 100;
+            const typeFactor = (type === 'begin') ? (1 + r) : 1;
+            
+            let pv = 0;
+            
+            // Calculate components
+            if (FV !== null) {
+                pv -= FV / Math.pow(1 + r, n);
+            }
+            
+            if (PMT !== null && r !== 0) {
+                pv -= PMT * typeFactor * ((1 - Math.pow(1 + r, -n)) / r);
+            } else if (PMT !== null && r === 0) {
+                pv -= PMT * n;
+            }
+            
+            // Build formula display
+            const typeDisplay = type === 'begin' ? '(1+r)' : '';
+            const typeMultiply = type === 'begin' ? ' × (1+r)' : '';
+            
+            let generalFormula = `
+                PV = -<div class="fraction"><span class="numerator">FV</span><span class="denominator">(1+r)<sup>n</sup></span></div> 
+                - PMT${typeMultiply} × <div class="fraction"><span class="numerator">1-(1+r)<sup>-n</sup></span><span class="denominator">r</span></div>
+            `;
+            
+            const frequencyNames = {1: 'Annual', 2: 'Semi-Annual', 4: 'Quarterly', 12: 'Monthly', 52: 'Weekly', 365: 'Daily'};
+            const freqName = frequencyNames[frequency] || frequency + ' times per year';
+            
+            let pluggedFormula = `
+                Periodic Rate: r = <div class="fraction"><span class="numerator">${annualRate}%</span><span class="denominator">${frequency}</span></div> = ${r.toFixed(6)} = ${(r * 100).toFixed(4)}% per period (${freqName})<br><br>
+                PV = -<div class="fraction"><span class="numerator">${FV || 0}</span><span class="denominator">(1+${r.toFixed(6)})<sup>${n}</sup></span></div>
+                ${PMT && PMT !== 0 ? `- ${PMT}${type === 'begin' ? ' × ' + typeFactor.toFixed(4) : ''} × <div class="fraction"><span class="numerator">1-(1+${r.toFixed(6)})<sup>-${n}</sup></span><span class="denominator">${r.toFixed(6)}</span></div>` : ''}
+                <br><br>PV = ${pv.toFixed(2)}
+            `;
+            
+            return [pv, generalFormula, pluggedFormula];
+        }
+
+        function calculateFV(PV, PMT, rate, n, type, frequency, annualRate) {
+            if (rate === null || n === null) {
+                throw new Error('Please enter Annual Interest Rate and Number of Periods');
+            }
+            
+            const r = rate / 100;
+            const typeFactor = (type === 'begin') ? (1 + r) : 1;
+            
+            let fv = 0;
+            
+            // Calculate components
+            if (PV !== null) {
+                fv = PV * Math.pow(1 + r, n);
+            }
+            
+            if (PMT !== null && r !== 0) {
+                fv += PMT * typeFactor * ((Math.pow(1 + r, n) - 1) / r);
+            } else if (PMT !== null && r === 0) {
+                fv += PMT * n;
+            }
+            
+            // Build formula display
+            const typeMultiply = type === 'begin' ? ' × (1+r)' : '';
+            const frequencyNames = {1: 'Annual', 2: 'Semi-Annual', 4: 'Quarterly', 12: 'Monthly', 52: 'Weekly', 365: 'Daily'};
+            const freqName = frequencyNames[frequency] || frequency + ' times per year';
+            
+            let generalFormula = `
+                FV = PV(1+r)<sup>n</sup> + PMT${typeMultiply} × <div class="fraction"><span class="numerator">(1+r)<sup>n</sup> - 1</span><span class="denominator">r</span></div>
+            `;
+            
+            let pluggedFormula = `
+                Periodic Rate: r = <div class="fraction"><span class="numerator">${annualRate}%</span><span class="denominator">${frequency}</span></div> = ${r.toFixed(6)} = ${(r * 100).toFixed(4)}% per period (${freqName})<br><br>
+                FV = ${PV || 0}(1+${r.toFixed(6)})<sup>${n}</sup> 
+                ${PMT && PMT !== 0 ? `+ ${PMT}${type === 'begin' ? ' × ' + typeFactor.toFixed(4) : ''} × <div class="fraction"><span class="numerator">(1+${r.toFixed(6)})<sup>${n}</sup> - 1</span><span class="denominator">${r.toFixed(6)}</span></div>` : ''}
+                <br><br>FV = ${fv.toFixed(2)}
+            `;
+            
+            return [fv, generalFormula, pluggedFormula];
+        }
+
+        function calculatePMT(PV, FV, rate, n, type, frequency, annualRate) {
+            if (rate === null || n === null) {
+                throw new Error('Please enter Annual Interest Rate and Number of Periods');
+            }
+            
+            const r = rate / 100;
+            const typeFactor = (type === 'begin') ? (1 + r) : 1;
+            
+            let pmt;
+            
+            if (r === 0) {
+                pmt = -(PV || 0 + FV || 0) / n;
+            } else {
+                const pvFactor = (PV || 0) * Math.pow(1 + r, n);
+                const fvFactor = (FV || 0);
+                const annuityFactor = ((Math.pow(1 + r, n) - 1) / r);
+                pmt = -(pvFactor + fvFactor) / (typeFactor * annuityFactor);
+            }
+            
+            // Build formula display
+            const typeMultiply = type === 'begin' ? '(1+r) × ' : '';
+            const typeDenom = type === 'begin' ? '(1+r)' : '';
+            const frequencyNames = {1: 'Annual', 2: 'Semi-Annual', 4: 'Quarterly', 12: 'Monthly', 52: 'Weekly', 365: 'Daily'};
+            const freqName = frequencyNames[frequency] || frequency + ' times per year';
+            
+            let generalFormula = `
+                PMT = -<div class="fraction">
+                    <span class="numerator">PV(1+r)<sup>n</sup> + FV</span>
+                    <span class="denominator">${typeDenom}${typeDenom ? ' × ' : ''}<div class="fraction" style="display:inline-block; font-size:0.9em;"><span class="numerator">(1+r)<sup>n</sup> - 1</span><span class="denominator">r</span></div></span>
+                </div>
+            `;
+            
+            const pvFactor = (PV || 0) * Math.pow(1 + r, n);
+            const annuityFactor = ((Math.pow(1 + r, n) - 1) / r);
+            
+            let pluggedFormula = `
+                Periodic Rate: r = <div class="fraction"><span class="numerator">${annualRate}%</span><span class="denominator">${frequency}</span></div> = ${r.toFixed(6)} = ${(r * 100).toFixed(4)}% per period (${freqName})<br><br>
+                PMT = -<div class="fraction">
+                    <span class="numerator">${PV || 0} × ${Math.pow(1 + r, n).toFixed(4)} + ${FV || 0}</span>
+                    <span class="denominator">${type === 'begin' ? typeFactor.toFixed(4) + ' × ' : ''}${annuityFactor.toFixed(4)}</span>
+                </div>
+                <br><br>PMT = -<div class="fraction">
+                    <span class="numerator">${(pvFactor + (FV || 0)).toFixed(2)}</span>
+                    <span class="denominator">${(typeFactor * annuityFactor).toFixed(4)}</span>
+                </div>
+            `;
+            
+            return [pmt, generalFormula, pluggedFormula];
+        }
+
+        function calculateN(PV, FV, PMT, rate, type, frequency, annualRate) {
+            if (rate === null) {
+                throw new Error('Please enter Annual Interest Rate');
+            }
+            
+            const r = rate / 100;
+            let n;
+            let generalFormula, pluggedFormula;
+            const frequencyNames = {1: 'Annual', 2: 'Semi-Annual', 4: 'Quarterly', 12: 'Monthly', 52: 'Weekly', 365: 'Daily'};
+            const freqName = frequencyNames[frequency] || frequency + ' times per year';
+            const periodNames = {1: 'years', 2: 'semi-annual periods', 4: 'quarters', 12: 'months', 52: 'weeks', 365: 'days'};
+            const periodName = periodNames[frequency] || 'periods';
+            
+            if (PMT === null || PMT === 0) {
+                if (PV === null || FV === null) {
+                    throw new Error('Need PV and FV when PMT is 0');
+                }
+                
+                n = Math.log(Math.abs(FV / PV)) / Math.log(1 + r);
+                generalFormula = `
+                    n = <div class="fraction">
+                        <span class="numerator">ln<span class="bracket-wrapper"><span class="bracket-left">(</span><div class="fraction" style="display:inline-block;font-size:0.9em;"><span class="numerator">FV</span><span class="denominator">PV</span></div><span class="bracket-right">)</span></span></span>
+                        <span class="denominator">ln(1+r)</span>
+                    </div>
+                `;
+                
+                const ratio = Math.abs(FV / PV);
+                pluggedFormula = `
+                    Periodic Rate: r = <div class="fraction"><span class="numerator">${annualRate}%</span><span class="denominator">${frequency}</span></div> = ${r.toFixed(6)} = ${(r * 100).toFixed(4)}% per period (${freqName})<br><br>
+                    n = <div class="fraction">
+                        <span class="numerator">ln<span class="bracket-wrapper"><span class="bracket-left">(</span><div class="fraction" style="display:inline-block;font-size:0.9em;"><span class="numerator">${FV}</span><span class="denominator">${PV}</span></div><span class="bracket-right">)</span></span></span>
+                        <span class="denominator">ln(${(1+r).toFixed(6)})</span>
+                    </div>
+                    <br><br>n = <div class="fraction">
+                        <span class="numerator">${Math.log(ratio).toFixed(6)}</span>
+                        <span class="denominator">${Math.log(1+r).toFixed(6)}</span>
+                    </div> = ${n.toFixed(2)} ${periodName}
+                `;
+            } else {
+                const typeFactor = (type === 'begin') ? (1 + r) : 1;
+                const typeDisplay = type === 'begin' ? 'PMT(1+r)' : 'PMT';
+                
+                const pvPart = (PV || 0) * r / (PMT * typeFactor);
+                const fvPart = (FV || 0) * r / (PMT * typeFactor);
+                
+                n = Math.log((1 - fvPart) / (1 + pvPart)) / Math.log(1 + r);
+                
+                if (isNaN(n) || !isFinite(n)) {
+                    throw new Error('Cannot solve for n with given values - check if payments are sufficient');
+                }
+                
+                generalFormula = `
+                    n = <div class="fraction">
+                        <span class="numerator">ln<span class="bracket-wrapper"><span class="bracket-left">[</span><div class="fraction" style="display:inline-block;font-size:0.85em;">
+                            <span class="numerator">${typeDisplay} - FV×r</span>
+                            <span class="denominator">${typeDisplay} + PV×r</span>
+                        </div><span class="bracket-right">]</span></span></span>
+                        <span class="denominator">ln(1+r)</span>
+                    </div>
+                `;
+                
+                const numeratorValue = PMT * typeFactor - (FV || 0) * r;
+                const denominatorValue = PMT * typeFactor + (PV || 0) * r;
+                const ratio = numeratorValue / denominatorValue;
+                
+                pluggedFormula = `
+                    Periodic Rate: r = <div class="fraction"><span class="numerator">${annualRate}%</span><span class="denominator">${frequency}</span></div> = ${r.toFixed(6)} = ${(r * 100).toFixed(4)}% per period (${freqName})<br><br>
+                    n = <div class="fraction">
+                        <span class="numerator">ln<span class="bracket-wrapper"><span class="bracket-left">[</span><div class="fraction" style="display:inline-block;font-size:0.85em;">
+                            <span class="numerator">${PMT}${type === 'begin' ? ' × ' + typeFactor.toFixed(4) : ''} - ${FV || 0} × ${r.toFixed(6)}</span>
+                            <span class="denominator">${PMT}${type === 'begin' ? ' × ' + typeFactor.toFixed(4) : ''} + ${PV || 0} × ${r.toFixed(6)}</span>
+                        </div><span class="bracket-right">]</span></span></span>
+                        <span class="denominator">ln(${(1+r).toFixed(6)})</span>
+                    </div>
+                    <br><br>n = <div class="fraction">
+                        <span class="numerator">${Math.log(ratio).toFixed(6)}</span>
+                        <span class="denominator">${Math.log(1+r).toFixed(6)}</span>
+                    </div> = ${n.toFixed(2)} ${periodName}
+                `;
+            }
+            
+            return [n, generalFormula, pluggedFormula];
+        }
+
+        function calculateRate(PV, FV, PMT, n, type, frequency) {
+            if (n === null) {
+                throw new Error('Please enter Number of Periods');
+            }
+            
+            // Newton-Raphson method for finding interest rate
+            let rate = 0.1; // Initial guess: 10%
+            const tolerance = 0.000001;
+            const maxIterations = 100;
+            
+            for (let i = 0; i < maxIterations; i++) {
+                const typeFactor = (type === 'begin') ? (1 + rate) : 1;
+                
+                let f = (PV || 0);
+                let df = 0;
+                
+                if (FV !== null) {
+                    f += FV / Math.pow(1 + rate, n);
+                    df -= n * FV / Math.pow(1 + rate, n + 1);
+                }
+                
+                if (PMT !== null && rate !== 0) {
+                    const annuity = PMT * typeFactor * ((1 - Math.pow(1 + rate, -n)) / rate);
+                    f += annuity;
+                    
+                    const dAnnuity = PMT * typeFactor * (
+                        (n * Math.pow(1 + rate, -n - 1)) / rate -
+                        ((1 - Math.pow(1 + rate, -n)) / (rate * rate))
+                    );
+                    df += dAnnuity;
+                }
+                
+                const newRate = rate - f / df;
+                
+                if (Math.abs(newRate - rate) < tolerance) {
+                    const annualRate = newRate * frequency * 100;
+                    const periodicRate = newRate * 100;
+                    
+                    const typeMultiply = type === 'begin' ? '(1+r)' : '';
+                    
+                    let generalFormula = `
+                        Newton-Raphson iteration to solve:<br>
+                        PV + <div class="fraction" style="display:inline-block;">
+                            <span class="numerator">FV</span>
+                            <span class="denominator">(1+r)<sup>n</sup></span>
+                        </div> + PMT${typeMultiply ? '×' + typeMultiply : ''}×<div class="fraction" style="display:inline-block;">
+                            <span class="numerator">1-(1+r)<sup>-n</sup></span>
+                            <span class="denominator">r</span>
+                        </div> = 0
+                    `;
+                    
+                    let pluggedFormula = `
+                        ${PV || 0} + <div class="fraction" style="display:inline-block;">
+                            <span class="numerator">${FV || 0}</span>
+                            <span class="denominator">(1+r)<sup>${n}</sup></span>
+                        </div> + ${PMT || 0}${typeMultiply ? '×' + typeMultiply : ''}×<div class="fraction" style="display:inline-block;">
+                            <span class="numerator">1-(1+r)<sup>-${n}</sup></span>
+                            <span class="denominator">r</span>
+                        </div> = 0
+                        <br><br>Converged to: r = ${periodicRate.toFixed(6)}% per period
+                        <br>Annual Rate = ${periodicRate.toFixed(6)}% × ${frequency} = ${annualRate.toFixed(4)}%
+                    `;
+                    
+                    return [annualRate, generalFormula, pluggedFormula];
+                }
+                
+                rate = newRate;
+                
+                if (rate < -0.99) rate = -0.99; // Prevent invalid rates
+            }
+            
+            throw new Error('Could not converge to a solution for interest rate after ' + maxIterations + ' iterations');
+        }
+
+        function displayResult(variable, value, generalFormula, pluggedFormula) {
+            const resultContainer = document.getElementById('resultContainer');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultValue = document.getElementById('resultValue');
+            const resultDetails = document.getElementById('resultDetails');
+            const errorMessage = document.getElementById('errorMessage');
+            const saveBtn = document.getElementById('saveBtn');
+            
+            errorMessage.classList.remove('show');
+            
+            const variableNames = {
+                'PV': 'Present Value',
+                'FV': 'Future Value',
+                'PMT': 'Payment',
+                'n': 'Number of Periods',
+                'annualRate': 'Annual Interest Rate'
+            };
+            
+            resultTitle.textContent = variableNames[variable];
+            
+            if (variable === 'annualRate') {
+                resultValue.textContent = value.toFixed(4) + '% per year';
+            } else if (variable === 'n') {
+                const frequency = parseFloat(document.getElementById('frequency').value);
+                const periodNames = {1: 'years', 2: 'semi-annual periods', 4: 'quarters', 12: 'months', 52: 'weeks', 365: 'days'};
+                const periodName = periodNames[frequency] || 'periods';
+                resultValue.textContent = value.toFixed(2) + ' ' + periodName;
+            } else {
+                const sign = value < 0 ? '-' : '';
+                resultValue.textContent = sign + '$' + Math.abs(value).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            }
+            
+            // Store current result for saving
+            currentResult = {
+                variable,
+                value,
+                variableName: variableNames[variable],
+                inputs: {
+                    PV: parseFloat(document.getElementById('PV').value) || null,
+                    FV: parseFloat(document.getElementById('FV').value) || null,
+                    PMT: parseFloat(document.getElementById('PMT').value) || null,
+                    annualRate: parseFloat(document.getElementById('annualRate').value) || null,
+                    frequency: parseFloat(document.getElementById('frequency').value),
+                    n: parseFloat(document.getElementById('n').value) || null,
+                    paymentType: document.getElementById('paymentType').value
+                },
+                timestamp: new Date().toISOString()
+            };
+            
+            // Build the formula display
+            let formulaHTML = `
+                <div class="formula-section">
+                    <div class="formula-step">
+                        <div class="formula-label">General Formula</div>
+                        <div class="math-formula">${generalFormula}</div>
+                    </div>
+                    
+                    <div class="formula-step">
+                        <div class="formula-label">Solution</div>
+                        <div class="math-formula">${pluggedFormula}</div>
+                    </div>
+                    
+                    <div class="final-answer">
+                        <div class="formula-label">Final Answer</div>
+                        <div class="formula-content">${variableNames[variable]} = ${
+                            variable === 'annualRate' ? value.toFixed(4) + '% per year' :
+                            variable === 'n' ? (() => {
+                                const frequency = parseFloat(document.getElementById('frequency').value);
+                                const periodNames = {1: 'years', 2: 'semi-annual periods', 4: 'quarters', 12: 'months', 52: 'weeks', 365: 'days'};
+                                const periodName = periodNames[frequency] || 'periods';
+                                return value.toFixed(2) + ' ' + periodName;
+                            })() :
+                            (value < 0 ? '-' : '') + '$' + Math.abs(value).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+                        }</div>
+                    </div>
+                </div>
+            `;
+            
+            resultDetails.innerHTML = formulaHTML;
+            resultContainer.classList.add('show');
+            saveBtn.style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            const resultContainer = document.getElementById('resultContainer');
+            const saveBtn = document.getElementById('saveBtn');
+            
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            resultContainer.classList.remove('show');
+            saveBtn.style.display = 'none';
+        }
+
+        function saveResult() {
+            if (!currentResult) return;
+            
+            savedResults.unshift(currentResult);
+            localStorage.setItem('cardinalCalculatorResults', JSON.stringify(savedResults));
+            displaySavedResults();
+            
+            // Visual feedback
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = '✓ Saved!';
+            saveBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+            
+            setTimeout(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.style.background = '';
+            }, 2000);
+        }
+
+        function displaySavedResults() {
+            const container = document.getElementById('savedResultsList');
+            
+            if (savedResults.length === 0) {
+                container.innerHTML = `
+                    <div class="no-saved-results">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <p>No saved results yet.<br>Calculate and save results to see them here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            savedResults.forEach((result, index) => {
+                const date = new Date(result.timestamp);
+                const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                
+                let valueDisplay;
+                if (result.variable === 'annualRate') {
+                    valueDisplay = result.value.toFixed(4) + '% per year';
+                } else if (result.variable === 'n') {
+                    valueDisplay = result.value.toFixed(2) + ' periods';
+                } else {
+                    const sign = result.value < 0 ? '-' : '';
+                    valueDisplay = sign + '$' + Math.abs(result.value).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                }
+                
+                const frequencyNames = {1: 'Annual', 2: 'Semi-Annual', 4: 'Quarterly', 12: 'Monthly', 52: 'Weekly', 365: 'Daily'};
+                
+                html += `
+                    <div class="saved-result-card">
+                        <button class="delete-result-btn" onclick="deleteResult(${index})" title="Delete this result">×</button>
+                        <div class="saved-result-timestamp">${formattedDate}</div>
+                        <div class="saved-result-variable">${result.variableName}</div>
+                        <div class="saved-result-value">${valueDisplay}</div>
+                        <div class="saved-result-details">
+                            ${result.inputs.PV !== null ? `<div><strong>PV:</strong> $${result.inputs.PV.toLocaleString()}</div>` : ''}
+                            ${result.inputs.FV !== null ? `<div><strong>FV:</strong> $${result.inputs.FV.toLocaleString()}</div>` : ''}
+                            ${result.inputs.PMT !== null ? `<div><strong>PMT:</strong> $${result.inputs.PMT.toLocaleString()}</div>` : ''}
+                            ${result.inputs.annualRate !== null ? `<div><strong>Rate:</strong> ${result.inputs.annualRate}% (${frequencyNames[result.inputs.frequency]})</div>` : ''}
+                            ${result.inputs.n !== null ? `<div><strong>Periods:</strong> ${result.inputs.n}</div>` : ''}
+                            <div><strong>Type:</strong> ${result.inputs.paymentType === 'end' ? 'Ordinary Annuity' : 'Annuity Due'}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `<button class="clear-all-btn" onclick="clearAllResults()">Clear All Results</button>`;
+            container.innerHTML = html;
+        }
+
+        function deleteResult(index) {
+            if (confirm('Delete this saved result?')) {
+                savedResults.splice(index, 1);
+                localStorage.setItem('cardinalCalculatorResults', JSON.stringify(savedResults));
+                displaySavedResults();
+            }
+        }
+
+        function clearAllResults() {
+            if (confirm('Are you sure you want to clear all saved results? This cannot be undone.')) {
+                savedResults = [];
+                localStorage.setItem('cardinalCalculatorResults', JSON.stringify(savedResults));
+                displaySavedResults();
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('solveFor').value = '';
+            document.getElementById('PV').value = '';
+            document.getElementById('FV').value = '';
+            document.getElementById('PMT').value = '';
+            document.getElementById('annualRate').value = '';
+            document.getElementById('frequency').value = '12';
+            document.getElementById('n').value = '';
+            document.getElementById('paymentType').value = 'end';
+            
+            const inputs = ['PV', 'FV', 'PMT', 'annualRate', 'n'];
+            inputs.forEach(input => {
+                const element = document.getElementById(input);
+                element.disabled = false;
+                element.style.backgroundColor = '';
+            });
+            
+            document.getElementById('resultContainer').classList.remove('show');
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('saveBtn').style.display = 'none';
+            currentResult = null;
+        }
+
+        // Scientific Calculator Functions
+        let calcCurrentValue = '0';
+        let calcPreviousValue = '';
+        let calcOperation = '';
+        let calcWaitingForNewValue = false;
+        let calcMemory = JSON.parse(localStorage.getItem('cardinalCalculatorMemory')) || [];
+        let calcPowerMode = false; // For x^y operation
+
+        function updateCalcDisplay() {
+            const display = document.getElementById('calcDisplay');
+            if (calcPowerMode && calcPreviousValue) {
+                display.textContent = calcPreviousValue + '^' + calcCurrentValue;
+            } else {
+                display.textContent = calcCurrentValue;
+            }
+        }
+
+        function calcInput(value) {
+            // Handle operations first
+            if (['+', '-', '*', '/', '%'].includes(value)) {
+                if (calcPreviousValue && calcOperation && !calcWaitingForNewValue) {
+                    calcCalculate();
+                }
+                calcOperation = value;
+                calcPreviousValue = calcCurrentValue;
+                calcWaitingForNewValue = true;
+                calcPowerMode = false;
+                updateCalcDisplay();
+                return; // Exit early for operations
+            }
+
+            // Handle number and decimal input
+            if (calcWaitingForNewValue) {
+                calcCurrentValue = value;
+                calcWaitingForNewValue = false;
+            } else {
+                if (calcCurrentValue === '0' && value !== '.') {
+                    calcCurrentValue = value;
+                } else if (value === '.' && calcCurrentValue.includes('.')) {
+                    return; // Don't allow multiple decimals
+                } else {
+                    calcCurrentValue += value;
+                }
+            }
+            
+            updateCalcDisplay();
+        }
+
+        function calcCalculate() {
+            if (calcPowerMode) {
+                // Handle x^y calculation
+                const base = parseFloat(calcPreviousValue);
+                const exponent = parseFloat(calcCurrentValue);
+                calcCurrentValue = Math.pow(base, exponent).toString();
+                calcPreviousValue = '';
+                calcOperation = '';
+                calcPowerMode = false;
+                calcWaitingForNewValue = true;
+                updateCalcDisplay();
+                return;
+            }
+
+            if (!calcPreviousValue || !calcOperation) return;
+            
+            const prev = parseFloat(calcPreviousValue);
+            const current = parseFloat(calcCurrentValue);
+            let result;
+            
+            switch(calcOperation) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = current !== 0 ? prev / current : 'Error';
+                    break;
+                case '%':
+                    result = prev % current;
+                    break;
+                default:
+                    return;
+            }
+            
+            calcCurrentValue = result === 'Error' ? 'Error' : result.toString();
+            calcOperation = '';
+            calcPreviousValue = '';
+            calcWaitingForNewValue = true;
+            updateCalcDisplay();
+        }
+
+        function calcFunction(func) {
+            const current = parseFloat(calcCurrentValue);
+            let result;
+            
+            switch(func) {
+                case 'sqrt':
+                    result = current >= 0 ? Math.sqrt(current) : 'Error';
+                    break;
+                case 'pow':
+                    result = Math.pow(current, 2);
+                    break;
+                case 'ln':
+                    result = current > 0 ? Math.log(current) : 'Error';
+                    break;
+                case 'negate':
+                    result = -current;
+                    break;
+                case '1/x':
+                    result = current !== 0 ? 1 / current : 'Error';
+                    break;
+                default:
+                    return;
+            }
+            
+            calcCurrentValue = result === 'Error' ? 'Error' : result.toString();
+            calcWaitingForNewValue = true;
+            updateCalcDisplay();
+        }
+
+        function startPowerInput() {
+            calcPowerMode = true;
+            calcPreviousValue = calcCurrentValue;
+            calcCurrentValue = '';
+            updateCalcDisplay();
+        }
+
+        function calcClear() {
+            calcCurrentValue = '0';
+            calcPreviousValue = '';
+            calcOperation = '';
+            calcWaitingForNewValue = false;
+            calcPowerMode = false;
+            updateCalcDisplay();
+        }
+
+        function calcBackspace() {
+            if (calcCurrentValue.length > 1) {
+                calcCurrentValue = calcCurrentValue.slice(0, -1);
+            } else {
+                calcCurrentValue = '0';
+            }
+            updateCalcDisplay();
+        }
+
+        function calcSaveMemory() {
+            const value = parseFloat(calcCurrentValue);
+            if (isNaN(value) || calcCurrentValue === 'Error') {
+                return;
+            }
+            
+            calcMemory.unshift({
+                value: value,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 10 values
+            if (calcMemory.length > 10) {
+                calcMemory = calcMemory.slice(0, 10);
+            }
+            
+            localStorage.setItem('cardinalCalculatorMemory', JSON.stringify(calcMemory));
+            displayCalcMemory();
+        }
+
+        function displayCalcMemory() {
+            const container = document.getElementById('calcMemoryDisplay');
+            
+            if (calcMemory.length === 0) {
+                container.innerHTML = `
+                    <h4>💾 Saved Values</h4>
+                    <div class="calc-memory-empty">No saved values yet</div>
+                `;
+                return;
+            }
+            
+            let html = '<h4>💾 Saved Values</h4>';
+            calcMemory.forEach((item, index) => {
+                html += `
+                    <div class="calc-memory-item" onclick="loadCalcMemory(${index})">
+                        <span class="calc-memory-value">${item.value.toLocaleString('en-US', {maximumFractionDigits: 6})}</span>
+                        <button class="calc-memory-delete" onclick="event.stopPropagation(); deleteCalcMemory(${index})" title="Delete">×</button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function loadCalcMemory(index) {
+            calcCurrentValue = calcMemory[index].value.toString();
+            calcWaitingForNewValue = false;
+            calcPowerMode = false;
+            updateCalcDisplay();
+        }
+
+        function deleteCalcMemory(index) {
+            calcMemory.splice(index, 1);
+            localStorage.setItem('cardinalCalculatorMemory', JSON.stringify(calcMemory));
+            displayCalcMemory();
+        }
+
+        // Load calculator memory on page load
+        window.addEventListener('load', function() {
+            displayCalcMemory();
+        });
+    </script>
+</body>
+</html>

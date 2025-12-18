@@ -19,8 +19,6 @@ A comprehensive financial calculator with Stanford Cardinal branding for Time Va
 
 ✅ **Scientific Calculator** - Quick calculator with memory functions built-in
 
-✅ **Stanford Cardinal Branding** - Beautiful design with Stanford colors and mascot
-
 ## Live Demo
 
 Visit: **https://matthewdlang18.github.io/cardinal-calculator/**
@@ -48,11 +46,3 @@ Simply open `index.html` in any modern web browser. No build process or dependen
 
 ![Cardinal Calculator](screenshot.png)
 
----
-
-**Stanford Cardinal Colors:**
-- Cardinal Red: #8C1515
-- Cool Grey: #2E2D29
-- Dark Red: #B1040E
-
-Made with ❤️ for financial calculations
